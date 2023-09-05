@@ -125,11 +125,19 @@ export default function Schedule(datas) {
       IdApartament: currentIdApartament,
     };
 
+    const newCustomer = {
+      IdCustomer: newId,
+      NameCustomer: `Teste ${newId}`,
+    }
+
     const newReservations = [...reservationList];
-
+    const newCustomers = [...customerList];
+    
     newReservations.push(newReservation);
-
+    newCustomers.push(newCustomer);
+    
     setReservationList(newReservations);
+    setCustomerList(newCustomers)
 
     setOpenModal(false);
   };
@@ -199,7 +207,7 @@ export default function Schedule(datas) {
     setFilteredApartaments(filteredApartaments[0].apartaments);
 
     // Também podemos limpar a seleção do quarto ao mudar de hotel
-    currentIdApartamentForm("");
+    setCurrentIdApartamentForm("");
   };
 
   const toggleAccordion = () => {
