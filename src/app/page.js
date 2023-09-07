@@ -5,7 +5,7 @@ import CustomersModel from "./datas/customers";
 import ReservationsModel from "./datas/reservations";
 import StatusModel from "./datas/status";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 
@@ -22,11 +22,14 @@ import {
   MenuItem,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { ArrowDropDownIcon, LocalizationProvider } from "@mui/x-date-pickers";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Container } from "react-bootstrap";
+import { CSSTransition } from "react-transition-group";
 
 // Lida com o array de datas que será renderizado
 const dataInicio = new Date("2023-07-26T12:00:00");
@@ -61,7 +64,7 @@ for (let i = 0; i <= intervalo; i++) {
 const dayWidth = 60;
 
 export default function Schedule(datas) {
-  const [accordionOpen, setAccordionOpen] = useState(true);
+  const [accordionOpen, setAccordionOpen] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
   const [hotelList, setHotelList] = useState([]);
@@ -78,6 +81,10 @@ export default function Schedule(datas) {
   const [statusReservaForm, setStatusReservaForm] = useState("");
   const [checkInForm, setCheckInForm] = useState("");
   const [checkOutForm, setCheckOutForm] = useState("");
+  
+  const [showButton, setShowButton] = useState(true);
+  
+  const nodeRef = useRef(null);
 
   const handleClickOpenModal = () => {
     setOpenModal(true);
@@ -210,8 +217,17 @@ export default function Schedule(datas) {
     setCurrentIdApartamentForm("");
   };
 
-  const toggleAccordion = () => {
-    setAccordionOpen(!accordionOpen);
+  const toggleAccordion = (index) => {
+    setAccordionOpen((prev) => {
+        return prev.map((accordionOpen, currentIndex) => {
+            if(currentIndex === index){
+                return {
+                    isOpen: !accordionOpen.isOpen
+                }
+            }
+            return accordionOpen;
+        })
+    });
   };
 
   const CheckApartament = (
@@ -270,6 +286,11 @@ export default function Schedule(datas) {
 
   useEffect(() => {
     setHotelList(HotelsModel);
+    setAccordionOpen(HotelsModel.map(() => {
+        return{
+            isOpen: false
+        }
+    }));
     setReservationList(ReservationsModel);
     setCustomerList(CustomersModel);
   }, []);
@@ -457,34 +478,39 @@ export default function Schedule(datas) {
       </div>
 
       {hotelList &&
-        hotelList.map((hotel) => {
+        hotelList.map((hotel, index) => {
           return (
-            <>
-              <div
-                onClick={toggleAccordion}
-                style={{
-                  height: "2.5rem",
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  background: "#fff",
-                  alignItems: "center",
-                  borderTop: "solid 1px #ccc",
-                  fontSize: "14px",
-                  borderBottom: "solid 1px #ccc",
-                }}
-              >
-                <ArrowDropDownIcon></ArrowDropDownIcon>
-                {hotel.HotelName}
-              </div>
-              {accordionOpen && (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  {hotel.apartaments.map((apartament, index) => {
+            <>             
+                <div
+                    onClick={() => toggleAccordion(index)}
+                    className={styles.toggleAccordion}
+                >
+                    <ArrowDropDownIcon
+                    style={{
+                        transformOrigin:'center',
+                        transform: accordionOpen[index].isOpen? 'rotate(0)':'rotate(-90deg)',
+                        transition: 'transform 400ms ease-in-out'
+                    }}
+                    >
+                    </ArrowDropDownIcon>                  
+                    {hotel.HotelName}
+                </div>
+              <Container>
+                <CSSTransition
+                    in={accordionOpen[index].isOpen}
+                    nodeRef={nodeRef}
+                    timeout={1000}
+                    classNames="alert"
+                    unmountOnExit
+                    onEnter={() => setShowButton(false)}
+                    onExited={() => setShowButton(true)}
+                    >                
+                    <div ref={nodeRef} style={{ display: "flex", flexDirection: "column" }}>
+                    {hotel.apartaments.map((apartament, index) => {
                     return (
                       <div
                         key={index}
-                        style={{
-                          display: "flex",
-                        }}
+                        style={{display: "flex"}}
                       >
                         <div className={styles.apartamentNumber}>
                           <span>Quarto {apartament.NumberApartament}</span>
@@ -601,7 +627,8 @@ export default function Schedule(datas) {
                     );
                   })}
                 </div>
-              )}
+                </CSSTransition>
+              </Container>            
             </>
           );
         })}

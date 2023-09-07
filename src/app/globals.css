@@ -1,0 +1,22 @@
+.alert-enter {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+  }
+  .alert-enter-active {
+    opacity: 1;
+    max-height: 10000px;
+    transition: max-height 600ms, opacity 600ms,
+      transform 600ms;
+  }
+  .alert-exit {
+    /* opacity: 1; */
+    max-height: 10000px;
+  }
+  .alert-exit-active {
+    overflow: hidden;
+    max-height: 0;
+    /* opacity: 0; */
+    transition: max-height 300ms, opacity 300ms,
+      transform 300ms, display 300ms;
+  }
