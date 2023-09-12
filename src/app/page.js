@@ -22,7 +22,6 @@ import {
   MenuItem,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -70,7 +69,6 @@ export default function Schedule(datas) {
   const [hotelList, setHotelList] = useState([]);
   const [reservationList, setReservationList] = useState([]);
   const [customerList, setCustomerList] = useState([]);
-  const [ApartamentList, setApartamentList] = useState([]);
 
   const [filteredApartaments, setFilteredApartaments] = useState([]);
 
@@ -86,12 +84,12 @@ export default function Schedule(datas) {
 
   const nodeRef = useRef(null);
 
-  const div2 = useRef([]);
-  const div1 = useRef(null);
+  const arrayDatesApartamentsDiv = useRef([]);
+  const arrayDatesDiv = useRef(null);
 
   const onScroll = () => {
-    div2.current.forEach(current => {
-      current.scrollLeft = div1.current?.scrollLeft || 0
+    arrayDatesApartamentsDiv.current.forEach(current => {
+      current.scrollLeft = arrayDatesDiv.current?.scrollLeft || 0
     })
   }
 
@@ -437,7 +435,7 @@ export default function Schedule(datas) {
               cursor: "pointer",
             }}
             onScroll={onScroll}
-            ref={div1}
+            ref={arrayDatesDiv}
           // onMouseDown={handleMouseDownDiv}
           // onMouseMove={handleMouseMove}
           // onMouseUp={handleMouseUp}
@@ -519,7 +517,7 @@ export default function Schedule(datas) {
                           <div style={{ display: "flex", overflow: "hidden" }}
                             key={index}
                             ref={(element) => {
-                              div2.current[index] = element
+                              arrayDatesApartamentsDiv.current[index] = element
                             }}
                             onScroll={onScroll}
                           >
