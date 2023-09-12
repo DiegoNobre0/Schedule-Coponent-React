@@ -514,22 +514,7 @@ export default function Schedule(datas) {
                                     <div
                                       key={index}
                                       className={`${styles.day}`}
-
-                                      style={{
-                                        backgroundColor: diasAbreviados[date.getDay()] === "Dom" || diasAbreviados[date.getDay()] === "Sáb"
-                                            ? "#F0F8FF"
-                                            : "white",
-                                        left: `${convertCheckIn(reservation.CheckIn) * 45 + 30}px`,
-                                        width: `${((convertCheckIn(reservation.CheckOut) + 1) - convertCheckIn(reservation.CheckIn)) * 45 - 45}px`,
-                                        height: `${dayWidth / 3}px`,
-                                        borderBottom: `${getStatusColorAndName(
-                                          reservation.Status
-                                        )}`,
-                                        cursor: "move",
-                                        display: "flex",
-                                        position: "absolute",
-                                        justifyContent: "space-between"
-                                      }}
+                                      style={{backgroundColor: diasAbreviados[date.getDay()] === "Dom" || diasAbreviados[date.getDay()] === "Sáb"? "#F0F8FF": "white"}}
                                     >
                                       <span className={styles.clipPath}>
                                         {mesesAbreviados[date.getMonth()]}
@@ -562,9 +547,9 @@ export default function Schedule(datas) {
                                         key={reservation.idHotelReservation}
                                         className={`${styles.guest} ${styles.draggingGuest}`}
                                         style={{
-                                          left: `${convertCheckIn(reservation.CheckIn) * 60 + 25}px`,
-                                          width: `${((convertCheckIn(reservation.CheckOut) + 1) - convertCheckIn(reservation.CheckIn)) * 60 - 30}px`,
-                                          height: `${dayWidth / 2}px`,
+                                          left: `${convertCheckIn(reservation.CheckIn) * 45 + 30}px`,
+                                          width: `${((convertCheckIn(reservation.CheckOut) + 1) - convertCheckIn(reservation.CheckIn)) * 45 - 45}px`,
+                                          height: `${dayWidth / 3}px`,
                                           borderBottom: `${getStatusColorAndName(
                                             reservation.Status
                                           )}`,
