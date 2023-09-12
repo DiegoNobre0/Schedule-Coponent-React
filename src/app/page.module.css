@@ -3,8 +3,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 0rem 0rem 22rem 2rem;
-    min-height: 100vh;
+    /* padding: 0rem 0rem 22rem 2rem; */
+    /* min-height: 100vh; */
     max-width: 1280px;
     width: 80rem;
   }
@@ -24,6 +24,11 @@
       overflow: none;
     }
   } */
+
+  .divBorder{
+    border-right: 1px solid #dfe1e8;
+    border-bottom: 1px solid #dfe1e8;
+  }
   
   .card {
     background: var(--surface-card);
@@ -79,14 +84,14 @@
   
   
   .day {
-    width: 60px;
-    height: 60px;
+    width: 45px;
+    height: 47px;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    border-right: 1px solid #ccc;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #dfe1e8;
+    border-top: 1px solid #dfe1e8;
+    border-bottom: 1px solid #dfe1e8;
     flex-direction: column;
     overflow: auto;
     font-size: 10px;
@@ -95,15 +100,15 @@
   
   .guest {
     /* position: absolute; */
-    top: 12px;
+    top: 11px;
     height:25px;
     background-color: #94bce7;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* border: 1px solid #0056b3; */
-    transform: skewX(-35deg);
+    /* border: 0px solid #0056b3; */
+    transform: skewX(-50deg);
     z-index: 10;
   }
   
@@ -124,15 +129,16 @@
   }
 
   .apartamentNumber{
-    width: 20rem;    
-    border-right: solid 3px #ccc;
-    border-top: solid 1px #ccc;
-    border-bottom: solid 1px #ccc;
+    width: 240px;    
+    border-right: solid 4px #ccc;
+    border-top: solid 1px #dfe1e8;
+    border-bottom: solid 1px #dfe1e8;
     display: flex;
-    justify-content: end;
+    justify-content: center;
     flex-direction: column;
     font-size: 13px;
     transition: height 200ms;
+    padding-left: 2rem;
   }
 
 
@@ -142,9 +148,37 @@
     justify-content: flex-start;
     background: #fff;
     align-items: center;
-    border-top: solid 1px #ccc;
-    font-size: 14px;
-    border-bottom: solid 1px #ccc;
+    border-top: solid 1px #dfe1e8;
+    font-size: 14px;      
+  }
+
+  .divOverflowDate{
+    display: flex;
+    width: 67.9rem;
+    overflow: auto;
+    cursor: "pointer",
+  }
+
+  .divOverflowDate::-webkit-scrollbar-thumb {
+    height: 1px;
+  
+  }
+
+  .divAddHospede{
+    width: 190px;
+    background-color: #fff;
+    border-right: solid 4px #ccc;
+    display: flex;
+    justify-content: center
+  }
+
+  .divStatus{
+    display: flex;
+    background: white;
+    padding: 4rem;
+    justify-content: space-evenly;
+    border: 1px solid #dfe1e8;
+    margin: 2rem;
   }
 
   

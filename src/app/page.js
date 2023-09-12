@@ -61,7 +61,7 @@ for (let i = 0; i <= intervalo; i++) {
   datasIntervalo.push(data);
 }
 
-const dayWidth = 60;
+const dayWidth = 47;
 
 export default function Schedule(datas) {
   const [accordionOpen, setAccordionOpen] = useState([]);
@@ -297,16 +297,11 @@ export default function Schedule(datas) {
 
   return (
     <main className={styles.main} style={{ backgroundColor: "white" }}>
-      <div style={{ display: "flex" }}>
+      <div className={styles.divBorder}>
+      <div style={{ display: "flex", height:'67px' }}>
         <div style={{ display: "flex" }}>
           <div
-            style={{
-              width: "10rem",
-              backgroundColor: "#fff",
-              borderRight: "solid 3px #ccc",
-              display: "flex",
-              justifyContent: "center",
-            }}
+          className={styles.divAddHospede}
           >
             <Button id="basic-button" onClick={handleClickOpenModal}>
               <AddIcon></AddIcon>
@@ -433,12 +428,7 @@ export default function Schedule(datas) {
             </Dialog>
           </div>
           <div
-            style={{
-              display: "flex",
-              width: "70rem",
-              overflow: "auto",
-              cursor: "pointer",
-            }}
+          className={styles.divOverflowDate}
             // ref={div1}
             // onScroll={onScroll}
             // onMouseDown={handleMouseDownDiv}
@@ -564,9 +554,9 @@ export default function Schedule(datas) {
                                       key={reservation.idHotelReservation}
                                       className={`${styles.guest} ${styles.draggingGuest}`}
                                       style={{
-                                        left: `${convertCheckIn(reservation.CheckIn) * 60 + 25}px`,
-                                        width: `${((convertCheckIn(reservation.CheckOut) + 1) - convertCheckIn(reservation.CheckIn)) * 60 - 30}px`,
-                                        height: `${dayWidth / 2}px`,
+                                        left: `${convertCheckIn(reservation.CheckIn) * 47 + 10}px`,
+                                        width: `${((convertCheckIn(reservation.CheckOut) + 1) - convertCheckIn(reservation.CheckIn)) * 47 - 45}px`,
+                                        height: `${dayWidth / 3}px`,
                                         borderBottom: `${getStatusColorAndName(
                                           reservation.Status
                                         )}`,
@@ -632,13 +622,15 @@ export default function Schedule(datas) {
             </>
           );
         })}
+      </div>
       <div
+      className={styles.divStatus}
         style={{
           display: "flex",
           background: "white",
           padding: "4rem",
           justifyContent: "space-evenly",
-          border: "1px solid #ccc",
+          border: "1px solid #dfe1e8",
           margin: "2rem",
         }}
       >
