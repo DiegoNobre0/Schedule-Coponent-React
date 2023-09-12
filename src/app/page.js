@@ -60,7 +60,7 @@ for (let i = 0; i <= intervalo; i++) {
   datasIntervalo.push(data);
 }
 
-const dayWidth = 60;
+const dayWidth = 47;
 
 export default function Schedule(datas) {
   const [accordionOpen, setAccordionOpen] = useState([]);
@@ -295,16 +295,11 @@ export default function Schedule(datas) {
 
   return (
     <main className={styles.main} style={{ backgroundColor: "white" }}>
-      <div style={{ display: "flex" }}>
+      <div className={styles.divBorder}>
+      <div style={{ display: "flex", height:'67px' }}>
         <div style={{ display: "flex" }}>
           <div
-            style={{
-              width: "10rem",
-              backgroundColor: "#fff",
-              borderRight: "solid 3px #ccc",
-              display: "flex",
-              justifyContent: "center",
-            }}
+          className={styles.divAddHospede}
           >
             <Dialog open={openModal} onClose={handleCloseOpenModal}>
               <DialogTitle style={{ textAlign: 'center' }}>Novo Hospede</DialogTitle>
@@ -428,20 +423,11 @@ export default function Schedule(datas) {
             </Dialog>
           </div>
           <div
-            style={{
-              display: "flex",
-              width: "70rem",
-              overflow: "auto",
-              cursor: "pointer",
-            }}
+            className={styles.divOverflowDate}
             onScroll={onScroll}
-            ref={arrayDatesDiv}
-          // onMouseDown={handleMouseDownDiv}
-          // onMouseMove={handleMouseMove}
-          // onMouseUp={handleMouseUp}
-          // onMouseLeave={handleMouseLeave}
+            ref={arrayDatesDiv}>
+            <div className={styles.calendar}
           >
-            <div className={styles.calendar}>
               <div className={styles.daysContainer}>
                 {datasIntervalo.map((date, index) => (
                   <div
@@ -530,12 +516,19 @@ export default function Schedule(datas) {
                                       className={`${styles.day}`}
 
                                       style={{
-                                        backgroundColor:
-                                          diasAbreviados[date.getDay()] ===
-                                            "Dom" ||
-                                            diasAbreviados[date.getDay()] === "Sáb"
+                                        backgroundColor: diasAbreviados[date.getDay()] === "Dom" || diasAbreviados[date.getDay()] === "Sáb"
                                             ? "#F0F8FF"
                                             : "white",
+                                        left: `${convertCheckIn(reservation.CheckIn) * 45 + 30}px`,
+                                        width: `${((convertCheckIn(reservation.CheckOut) + 1) - convertCheckIn(reservation.CheckIn)) * 45 - 45}px`,
+                                        height: `${dayWidth / 3}px`,
+                                        borderBottom: `${getStatusColorAndName(
+                                          reservation.Status
+                                        )}`,
+                                        cursor: "move",
+                                        display: "flex",
+                                        position: "absolute",
+                                        justifyContent: "space-between"
                                       }}
                                     >
                                       <span className={styles.clipPath}>
@@ -637,16 +630,8 @@ export default function Schedule(datas) {
             </>
           );
         })}
-      <div
-        style={{
-          display: "flex",
-          background: "white",
-          padding: "4rem",
-          justifyContent: "space-evenly",
-          border: "1px solid #ccc",
-          margin: "2rem",
-        }}
-      >
+      </div>
+      <div className={styles.divStatus}>
         <div>
           <SquareIcon style={{ fontSize: "15px", color: "green" }}></SquareIcon>
           <span style={{ fontSize: "13px" }}>Bloqueada</span>
