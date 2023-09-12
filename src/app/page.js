@@ -60,7 +60,7 @@ for (let i = 0; i <= intervalo; i++) {
   datasIntervalo.push(data);
 }
 
-const dayWidth = 47;
+const dayWidth = 45;
 
 export default function Schedule(datas) {
   const [accordionOpen, setAccordionOpen] = useState([]);
@@ -82,16 +82,42 @@ export default function Schedule(datas) {
 
   const [showButton, setShowButton] = useState(true);
 
+  const [dragging, setDragging] = useState(false);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragStartScrollLeft, setDragStartScrollLeft] = useState(0);
+
   const nodeRef = useRef(null);
 
   const arrayDatesApartamentsDiv = useRef([]);
   const arrayDatesDiv = useRef(null);
 
   const onScroll = () => {
+    debugger
     arrayDatesApartamentsDiv.current.forEach(current => {
       current.scrollLeft = arrayDatesDiv.current?.scrollLeft || 0
     })
   }
+
+  const handleMouseDownDiv = (event) => {
+    setDragging(true);
+    setDragStartX(event.clientX);
+    setDragStartScrollLeft(arrayDatesDiv.current.scrollLeft);
+  };
+
+  const handleMouseMove = (event) => {
+    if (dragging) {
+      const offsetX = event.clientX - dragStartX;
+      arrayDatesDiv.current.scrollLeft = dragStartScrollLeft - offsetX;
+    }
+  };
+
+  const handleMouseUp = () => {
+    setDragging(false);
+  };
+
+  const handleMouseLeave = () => {
+    setDragging(false);
+  };
 
   const handleClickOpenModal = () => {
     setOpenModal(true);
@@ -425,6 +451,10 @@ export default function Schedule(datas) {
           <div
             className={styles.divOverflowDate}
             onScroll={onScroll}
+            onMouseDown={handleMouseDownDiv}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
             ref={arrayDatesDiv}>
             <div className={styles.calendar}
           >
