@@ -180,31 +180,24 @@ export default function Schedule(datas) {
     const newCheckOut = checkOut;
 
     for (const reservation of reservationList) {
-      const reservationCheckIn = new Date(reservation.CheckIn);
-      const reservationCheckOut = new Date(reservation.CheckOut);
+      const currentReservationCheckIn = reservation.CheckIn;
+      const currentReservationCheckOut = reservation.CheckOut;
       //To-Do: Verificar se IdHotel que queremos criar a reserva é igual, se sim entra para verificar a disponibilidade da data
 
       if (
         reservation.IdApartament === idApartamentNew &&
         reservation.IdHotel === NewHotelId
       ) {
-        const reservationCheckInIndex = datasIntervalo.findIndex(
-          (date) => date.getTime() === reservationCheckIn.getTime()
-        );
-        const reservationCheckOutIndex = datasIntervalo.findIndex(
-          (date) => date.getTime() === reservationCheckOut.getTime()
-        );
-
         // O novo CheckIn pertence ao período desta reserva?
         if (
-          reservation.CheckIn >= reservationCheckInIndex &&
-          reservation.CheckIn <= reservationCheckOutIndex
+          reservation.CheckIn >= currentReservationCheckIn &&
+          reservation.CheckIn <= currentReservationCheckOut
         )
           return false;
 
         if (
-          reservation.CheckOut >= reservationCheckInIndex &&
-          reservation.CheckOut <= reservationCheckOutIndex
+          reservation.CheckOut >= currentReservationCheckIn &&
+          reservation.CheckOut <= currentReservationCheckOut
         )
           return false;
       }
