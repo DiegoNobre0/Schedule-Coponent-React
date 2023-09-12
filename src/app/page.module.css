@@ -124,15 +124,16 @@
   }
 
   .apartamentNumber{
+    display: flex;
     width: 20rem;    
     border-right: solid 3px #ccc;
     border-top: solid 1px #ccc;
     border-bottom: solid 1px #ccc;
-    display: flex;
-    justify-content: end;
-    flex-direction: column;
+    justify-content: start;
     font-size: 13px;
     transition: height 200ms;
+    align-items: center;
+    padding-right: 0.75rem;
   }
 
 

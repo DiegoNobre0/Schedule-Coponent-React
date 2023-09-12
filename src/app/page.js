@@ -81,10 +81,19 @@ export default function Schedule(datas) {
   const [statusReservaForm, setStatusReservaForm] = useState("");
   const [checkInForm, setCheckInForm] = useState("");
   const [checkOutForm, setCheckOutForm] = useState("");
-  
+
   const [showButton, setShowButton] = useState(true);
-  
+
   const nodeRef = useRef(null);
+
+  const div2 = useRef([]);
+  const div1 = useRef(null);
+
+  const onScroll = () => {
+    div2.current.forEach(current => {
+      current.scrollLeft = div1.current?.scrollLeft || 0
+    })
+  }
 
   const handleClickOpenModal = () => {
     setOpenModal(true);
@@ -139,10 +148,10 @@ export default function Schedule(datas) {
 
     const newReservations = [...reservationList];
     const newCustomers = [...customerList];
-    
+
     newReservations.push(newReservation);
     newCustomers.push(newCustomer);
-    
+
     setReservationList(newReservations);
     setCustomerList(newCustomers)
 
@@ -158,9 +167,9 @@ export default function Schedule(datas) {
     const dataFormatada = `${data.getFullYear()}-${(data.getMonth() + 1)
       .toString()
       .padStart(2, "0")}-${data
-      .getDate()
-      .toString()
-      .padStart(2, "0")}T12:00:00`;
+        .getDate()
+        .toString()
+        .padStart(2, "0")}T12:00:00`;
 
     return dataFormatada;
   };
@@ -178,26 +187,26 @@ export default function Schedule(datas) {
       if (
         reservation.IdApartament === idApartamentNew &&
         reservation.IdHotel === NewHotelId
-      ){
-      const reservationCheckInIndex = datasIntervalo.findIndex(
-        (date) => date.getTime() === reservationCheckIn.getTime()
-      );
-      const reservationCheckOutIndex = datasIntervalo.findIndex(
-        (date) => date.getTime() === reservationCheckOut.getTime()
-      );
+      ) {
+        const reservationCheckInIndex = datasIntervalo.findIndex(
+          (date) => date.getTime() === reservationCheckIn.getTime()
+        );
+        const reservationCheckOutIndex = datasIntervalo.findIndex(
+          (date) => date.getTime() === reservationCheckOut.getTime()
+        );
 
-      // O novo CheckIn pertence ao período desta reserva?
-      if (
-        reservation.CheckIn >= reservationCheckInIndex &&
-        reservation.CheckIn <= reservationCheckOutIndex
-      )
-        return false;
+        // O novo CheckIn pertence ao período desta reserva?
+        if (
+          reservation.CheckIn >= reservationCheckInIndex &&
+          reservation.CheckIn <= reservationCheckOutIndex
+        )
+          return false;
 
-      if (
-        reservation.CheckOut >= reservationCheckInIndex &&
-        reservation.CheckOut <= reservationCheckOutIndex
-      )
-        return false;
+        if (
+          reservation.CheckOut >= reservationCheckInIndex &&
+          reservation.CheckOut <= reservationCheckOutIndex
+        )
+          return false;
       }
     }
     return true;
@@ -219,14 +228,14 @@ export default function Schedule(datas) {
 
   const toggleAccordion = (index) => {
     setAccordionOpen((prev) => {
-        return prev.map((accordionOpen, currentIndex) => {
-            if(currentIndex === index){
-                return {
-                    isOpen: !accordionOpen.isOpen
-                }
-            }
-            return accordionOpen;
-        })
+      return prev.map((accordionOpen, currentIndex) => {
+        if (currentIndex === index) {
+          return {
+            isOpen: !accordionOpen.isOpen
+          }
+        }
+        return accordionOpen;
+      })
     });
   };
 
@@ -287,9 +296,9 @@ export default function Schedule(datas) {
   useEffect(() => {
     setHotelList(HotelsModel);
     setAccordionOpen(HotelsModel.map(() => {
-        return{
-            isOpen: false
-        }
+      return {
+        isOpen: false
+      }
     }));
     setReservationList(ReservationsModel);
     setCustomerList(CustomersModel);
@@ -308,11 +317,8 @@ export default function Schedule(datas) {
               justifyContent: "center",
             }}
           >
-            <Button id="basic-button" onClick={handleClickOpenModal}>
-              <AddIcon></AddIcon>
-            </Button>
             <Dialog open={openModal} onClose={handleCloseOpenModal}>
-              <DialogTitle style={{textAlign: 'center'}}>Novo Hospede</DialogTitle>
+              <DialogTitle style={{ textAlign: 'center' }}>Novo Hospede</DialogTitle>
               <DialogContent>
                 <FormControl>
                   <div style={{ display: "flex" }}>
@@ -387,7 +393,7 @@ export default function Schedule(datas) {
                     </div>
                   </div>
                   <div style={{ display: "flex" }}>
-                    <div style={{paddingRight: "1rem"}}>
+                    <div style={{ paddingRight: "1rem" }}>
                       <span>Check-In</span>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={["DatePicker"]}>
@@ -439,12 +445,12 @@ export default function Schedule(datas) {
               overflow: "auto",
               cursor: "pointer",
             }}
-            // ref={div1}
-            // onScroll={onScroll}
-            // onMouseDown={handleMouseDownDiv}
-            // onMouseMove={handleMouseMove}
-            // onMouseUp={handleMouseUp}
-            // onMouseLeave={handleMouseLeave}
+            onScroll={onScroll}
+            ref={div1}
+          // onMouseDown={handleMouseDownDiv}
+          // onMouseMove={handleMouseMove}
+          // onMouseUp={handleMouseUp}
+          // onMouseLeave={handleMouseLeave}
           >
             <div className={styles.calendar}>
               <div className={styles.daysContainer}>
@@ -455,7 +461,7 @@ export default function Schedule(datas) {
                     style={{
                       backgroundColor:
                         diasAbreviados[date.getDay()] === "Dom" ||
-                        diasAbreviados[date.getDay()] === "Sáb"
+                          diasAbreviados[date.getDay()] === "Sáb"
                           ? "#F0F8FF"
                           : "white",
                     }}
@@ -480,155 +486,165 @@ export default function Schedule(datas) {
       {hotelList &&
         hotelList.map((hotel, index) => {
           return (
-            <>             
-                <div
-                    onClick={() => toggleAccordion(index)}
-                    className={styles.toggleAccordion}
+            <>
+              <div
+                onClick={() => toggleAccordion(index)}
+                className={styles.toggleAccordion}
+              >
+                <ArrowDropDownIcon
+                  style={{
+                    transformOrigin: 'center',
+                    transform: accordionOpen[index].isOpen ? 'rotate(0)' : 'rotate(-90deg)',
+                    transition: 'transform 400ms ease-in-out'
+                  }}
                 >
-                    <ArrowDropDownIcon
-                    style={{
-                        transformOrigin:'center',
-                        transform: accordionOpen[index].isOpen? 'rotate(0)':'rotate(-90deg)',
-                        transition: 'transform 400ms ease-in-out'
-                    }}
-                    >
-                    </ArrowDropDownIcon>                  
-                    {hotel.HotelName}
-                </div>
+                </ArrowDropDownIcon>
+                {hotel.HotelName}
+              </div>
               <Container>
                 <CSSTransition
-                    in={accordionOpen[index].isOpen}
-                    nodeRef={nodeRef}
-                    timeout={1000}
-                    classNames="alert"
-                    unmountOnExit
-                    onEnter={() => setShowButton(false)}
-                    onExited={() => setShowButton(true)}
-                    >                
-                    <div ref={nodeRef} style={{ display: "flex", flexDirection: "column" }}>
+                  in={accordionOpen[index].isOpen}
+                  nodeRef={nodeRef}
+                  timeout={1000}
+                  classNames="alert"
+                  unmountOnExit
+                  onEnter={() => setShowButton(false)}
+                  onExited={() => setShowButton(true)}
+                >
+                  <div ref={nodeRef} style={{ display: "flex", flexDirection: "column" }}>
                     {hotel.apartaments.map((apartament, index) => {
-                    return (
-                      <div
-                        key={index}
-                        style={{display: "flex"}}
-                      >
-                        <div className={styles.apartamentNumber}>
-                          <span>Quarto {apartament.NumberApartament}</span>
-                        </div>
+                      return (
+                        <div
+                          key={index}
+                          style={{ display: "flex" }}
+                        >
+                          <div className={styles.apartamentNumber}>
+                            <Button id="basic-button" onClick={handleClickOpenModal}>
+                              <AddIcon></AddIcon>
+                            </Button>
+                            <span>Quarto {apartament.NumberApartament}</span>
+                          </div>
 
-                        <div style={{ display: "flex", overflow: "hidden" }}>
-                          <div className={styles.calendar}>
-                            <div className={styles.daysContainer}>
-                              {datasIntervalo.map((date, index) => {
-                                return (
-                                  <div
-                                    key={index}
-                                    className={`${styles.day}`}
-                                    style={{
-                                      backgroundColor:
-                                        diasAbreviados[date.getDay()] ===
-                                          "Dom" ||
-                                        diasAbreviados[date.getDay()] === "Sáb"
-                                          ? "#F0F8FF"
-                                          : "white",
-                                    }}
-                                  >
-                                    <span className={styles.clipPath}>
-                                      {mesesAbreviados[date.getMonth()]}
-                                    </span>
-
-                                    <span
-                                      className={styles.clipPath}
-                                      style={{ textAlign: "center" }}
-                                    >
-                                      {date.getDate()}
-                                    </span>
-
-                                    <span className={styles.clipPath}>
-                                      {diasAbreviados[date.getDay()]}
-                                    </span>
-                                  </div>
-                                );
-                              })}
-                              
-                              {reservationList.map((reservation, indexador) => {
-                                const isThisAp = CheckApartament(
-                                  apartament.IdApartament,
-                                  hotel.IdHotel,
-                                  reservation.IdHotel,
-                                  reservation.IdApartament
-                                );
-                                return (
-                                  isThisAp && (
+                          <div style={{ display: "flex", overflow: "hidden" }}
+                            key={index}
+                            ref={(element) => {
+                              div2.current[index] = element
+                            }}
+                            onScroll={onScroll}
+                          >
+                            <div className={styles.calendar}>
+                              <div className={styles.daysContainer}>
+                                {datasIntervalo.map((date, index) => {
+                                  return (
                                     <div
-                                      key={reservation.idHotelReservation}
-                                      className={`${styles.guest} ${styles.draggingGuest}`}
+                                      key={index}
+                                      className={`${styles.day}`}
+
                                       style={{
-                                        left: `${convertCheckIn(reservation.CheckIn) * 60 + 25}px`,
-                                        width: `${((convertCheckIn(reservation.CheckOut) + 1) - convertCheckIn(reservation.CheckIn)) * 60 - 30}px`,
-                                        height: `${dayWidth / 2}px`,
-                                        borderBottom: `${getStatusColorAndName(
-                                          reservation.Status
-                                        )}`,
-                                        cursor: "move",
-                                        display: "flex",
-                                        position: "absolute",
-                                        justifyContent: "space-between",
+                                        backgroundColor:
+                                          diasAbreviados[date.getDay()] ===
+                                            "Dom" ||
+                                            diasAbreviados[date.getDay()] === "Sáb"
+                                            ? "#F0F8FF"
+                                            : "white",
                                       }}
-                                     
                                     >
-                                      <div
-                                        className={styles.checkInOut}
-                                        style={{
-                                          left: `0`,
-                                          cursor: "col-resize",
-                                          background: "#94bce7",
-                                          height: "100%",
-                                          width: "3px",
-                                        }}
-                                        onMouseDown={(e) =>
-                                          handleMouseDown(e, true, reservation)
-                                        }
-                                      ></div>
-                                      <span>
-                                        {getNameByCustomerId(
-                                          reservation.IdCustomer
-                                        )}
+                                      <span className={styles.clipPath}>
+                                        {mesesAbreviados[date.getMonth()]}
                                       </span>
-                                      <span style={{ fontSize: "10px" }}>
-                                        {reservation.Cliente}
+
+                                      <span
+                                        className={styles.clipPath}
+                                        style={{ textAlign: "center" }}
+                                      >
+                                        {date.getDate()}
                                       </span>
-                                      <div
-                                        className={styles.checkInOut}
-                                        style={{
-                                          left: `0`,
-                                          cursor: "col-resize",
-                                          background: "#94bce7",
-                                          height: "100%",
-                                          width: "3px",
-                                        }}
-                                        onMouseDown={(e) => {
-                                          handleMouseDownDiv(e);
-                                          handleMouseDown(
-                                            e,
-                                            false,
-                                            reservation
-                                          );
-                                        }}
-                                      ></div>
+
+                                      <span className={styles.clipPath}>
+                                        {diasAbreviados[date.getDay()]}
+                                      </span>
                                     </div>
-                                  )
-                                );
-                              })}
+                                  );
+                                })}
+
+                                {reservationList.map((reservation, indexador) => {
+                                  const isThisAp = CheckApartament(
+                                    apartament.IdApartament,
+                                    hotel.IdHotel,
+                                    reservation.IdHotel,
+                                    reservation.IdApartament
+                                  );
+                                  return (
+                                    isThisAp && (
+                                      <div
+                                        key={reservation.idHotelReservation}
+                                        className={`${styles.guest} ${styles.draggingGuest}`}
+                                        style={{
+                                          left: `${convertCheckIn(reservation.CheckIn) * 60 + 25}px`,
+                                          width: `${((convertCheckIn(reservation.CheckOut) + 1) - convertCheckIn(reservation.CheckIn)) * 60 - 30}px`,
+                                          height: `${dayWidth / 2}px`,
+                                          borderBottom: `${getStatusColorAndName(
+                                            reservation.Status
+                                          )}`,
+                                          cursor: "move",
+                                          display: "flex",
+                                          position: "absolute",
+                                          justifyContent: "space-between",
+                                        }}
+
+                                      >
+                                        <div
+                                          className={styles.checkInOut}
+                                          style={{
+                                            left: `0`,
+                                            cursor: "col-resize",
+                                            background: "#94bce7",
+                                            height: "100%",
+                                            width: "3px",
+                                          }}
+                                          onMouseDown={(e) =>
+                                            handleMouseDown(e, true, reservation)
+                                          }
+                                        ></div>
+                                        <span>
+                                          {getNameByCustomerId(
+                                            reservation.IdCustomer
+                                          )}
+                                        </span>
+                                        <span style={{ fontSize: "10px" }}>
+                                          {reservation.Cliente}
+                                        </span>
+                                        <div
+                                          className={styles.checkInOut}
+                                          style={{
+                                            left: `0`,
+                                            cursor: "col-resize",
+                                            background: "#94bce7",
+                                            height: "100%",
+                                            width: "3px",
+                                          }}
+                                          onMouseDown={(e) => {
+                                            handleMouseDownDiv(e);
+                                            handleMouseDown(
+                                              e,
+                                              false,
+                                              reservation
+                                            );
+                                          }}
+                                        ></div>
+                                      </div>
+                                    )
+                                  );
+                                })}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
                 </CSSTransition>
-              </Container>            
+              </Container>
             </>
           );
         })}
