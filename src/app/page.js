@@ -554,8 +554,8 @@ export default function Schedule(datas) {
                                       key={reservation.idHotelReservation}
                                       className={`${styles.guest} ${styles.draggingGuest}`}
                                       style={{
-                                        left: `${convertCheckIn(reservation.CheckIn) * 47 + 10}px`,
-                                        width: `${((convertCheckIn(reservation.CheckOut) + 1) - convertCheckIn(reservation.CheckIn)) * 47 - 45}px`,
+                                        left: `${convertCheckIn(reservation.CheckIn) * 45 + 30}px`,
+                                        width: `${((convertCheckIn(reservation.CheckOut) + 1) - convertCheckIn(reservation.CheckIn)) * 45 - 45}px`,
                                         height: `${dayWidth / 3}px`,
                                         borderBottom: `${getStatusColorAndName(
                                           reservation.Status
@@ -623,17 +623,7 @@ export default function Schedule(datas) {
           );
         })}
       </div>
-      <div
-      className={styles.divStatus}
-        style={{
-          display: "flex",
-          background: "white",
-          padding: "4rem",
-          justifyContent: "space-evenly",
-          border: "1px solid #dfe1e8",
-          margin: "2rem",
-        }}
-      >
+      <div className={styles.divStatus}>
         <div>
           <SquareIcon style={{ fontSize: "15px", color: "green" }}></SquareIcon>
           <span style={{ fontSize: "13px" }}>Bloqueada</span>
