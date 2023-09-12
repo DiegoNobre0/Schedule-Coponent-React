@@ -130,7 +130,7 @@
 
   .apartamentNumber{
     display: flex;
-    width: 240px;    
+    width: 270px;    
     border-right: solid 4px #ccc;
     border-top: solid 1px #dfe1e8;
     border-bottom: solid 1px #dfe1e8;
@@ -154,14 +154,9 @@
 
   .divOverflowDate{
     display: flex;
-    width: 67.9rem;
+    width: 67.8rem;
     overflow: auto;
     cursor: "pointer",
-  }
-
-  .divOverflowDate::-webkit-scrollbar-thumb {
-    height: 5px;
-  
   }
 
   .divAddHospede{
